@@ -1,15 +1,17 @@
 const express = require("express");
 const cors = require("cors");
+const mongoose = require("mongoose");
 
 const app = express();
 var PORT = 3001;
 app.use(express.json());
 app.use(cors());
 require('./connection');
-//Write missing code here
+
 const BlogModel = require('./model');
-//Write your POST API here
-app.post('/post', async (req, res) => {
+
+// POST API
+app.post('/add', async (req, res) => {
   try {
     const newBlog = new BlogModel(req.body);
     await newBlog.save();
@@ -20,6 +22,7 @@ app.post('/post', async (req, res) => {
   }
 });
 
+// GET API to fetch all blog posts
 app.get("/get", async (req, res) => {
   try {
     let data = await BlogModel.find();
@@ -28,6 +31,18 @@ app.get("/get", async (req, res) => {
     console.log(error);
   }
 });
+
+// GET API to fetch a single blog post by ID
+app.get("/get/:id", async (req, res) => {
+  try {
+    let data = await BlogModel.findById(req.params.id);
+    res.send(data);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// DELETE API
 app.delete("/delete/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -39,6 +54,7 @@ app.delete("/delete/:id", async (req, res) => {
   }
 });
 
+// PUT API
 app.put("/update/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -53,29 +69,3 @@ app.put("/update/:id", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`${PORT} is up and running`);
 });
-
-
-// const express = require("express");
-// const cors = require("cors");
-
-// const app = express();
-// var PORT = 3001;
-// app.use(express.json());
-// app.use(cors());
-// //Write missing code here
-
-// //Write your POST API here
-
-// app.get("/get", async (req, res) => {
-//   try {
-//     let data = await BlogModel.find();
-//     res.send(data);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
-
-
-// app.listen(PORT, () => {
-//   console.log(`${PORT} is up and running`);
-// });

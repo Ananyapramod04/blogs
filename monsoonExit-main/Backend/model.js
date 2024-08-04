@@ -5,7 +5,8 @@ const schema = mongoose.Schema({
   content: String,
   img_url: String,
 });
-module.exports=mongoose.model('blogDetail',schema);
+module.exports = mongoose.model('blogDetail', schema);
+
 //Write missing codes here
 
 // //Write missing codes here
